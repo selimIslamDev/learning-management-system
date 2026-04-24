@@ -22,7 +22,10 @@ async function callGemini(prompt: string): Promise<string> {
     }
   );
 
-  if (!response.ok) throw new Error('Gemini API call failed');
+  if (!response.ok) {
+  const errorData = await response.json();
+  throw new Error(`Gemini API call failed: ${JSON.stringify(errorData)}`);
+}
   const data = await response.json();
   return data.candidates[0].content.parts[0].text;
 }
