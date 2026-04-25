@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -41,7 +42,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen grid-bg flex items-center justify-center p-4" style={{ background: 'var(--bg-primary)' }}>
-      {/* Background decorations */}
       <div style={{
         position: 'fixed', top: '-200px', right: '-200px', width: '600px', height: '600px',
         background: 'radial-gradient(circle, rgba(77,112,255,0.08) 0%, transparent 70%)',
@@ -54,7 +54,6 @@ export default function LoginPage() {
       }} />
 
       <div className="w-full max-w-md animate-fade-up">
-        {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-4">
             <div style={{
@@ -72,7 +71,6 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Card */}
         <div className="glass-card p-8">
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>
             Sign In
@@ -122,7 +120,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Demo credentials */}
           <div style={{ marginTop: '28px', paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
             <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '12px', textAlign: 'center', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
               Demo Accounts
@@ -138,6 +135,11 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
+
+          <p style={{ textAlign: 'center', marginTop: '20px', color: 'var(--text-secondary)', fontSize: '14px' }}>
+            Don't have an account?{' '}
+            <Link href="/signup" style={{ color: '#4d70ff', fontWeight: 600 }}>Sign Up</Link>
+          </p>
         </div>
 
         <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '13px', color: 'var(--text-muted)' }}>
