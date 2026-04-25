@@ -16,10 +16,15 @@ export default function InstructorSubmissionsPage() {
   useEffect(() => { fetchSubmissions(); }, []);
 
   async function fetchSubmissions() {
-    const res = await fetch('/api/submissions');
-    const data = await res.json();
-    setSubmissions(data);
-    setLoading(false);
+    try {
+      const res = await fetch('/api/submissions');
+      const data = await res.json();
+      setSubmissions(Array.isArray(data) ? data : []);
+    } catch (error) {
+      setSubmissions([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   function showToast(msg: string) {
@@ -98,7 +103,6 @@ export default function InstructorSubmissionsPage() {
         <p style={{ color: 'var(--text-secondary)', fontSize: '15px' }}>Review student submissions and provide feedback</p>
       </div>
 
-      {/* Filter tabs */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
         {(['all', 'pending', 'accepted', 'needs_improvement'] as const).map(f => (
           <button key={f} onClick={() => setFilter(f)} style={{
@@ -153,7 +157,6 @@ export default function InstructorSubmissionsPage() {
         </div>
       )}
 
-      {/* Review Modal */}
       {selected && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}
           onClick={e => { if (e.target === e.currentTarget) setSelected(null); }}>
@@ -163,7 +166,6 @@ export default function InstructorSubmissionsPage() {
               <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '20px' }}>✕</button>
             </div>
 
-            {/* Student info */}
             <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '10px', padding: '16px', marginBottom: '20px' }}>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>Student</p>
               <p style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '2px' }}>{selected.studentName}</p>
@@ -174,7 +176,6 @@ export default function InstructorSubmissionsPage() {
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{selected.note}</p>
             </div>
 
-            {/* Status */}
             <div style={{ marginBottom: '16px' }}>
               <label className="form-label">Update Status</label>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
@@ -191,7 +192,6 @@ export default function InstructorSubmissionsPage() {
               </div>
             </div>
 
-            {/* Feedback */}
             <div style={{ marginBottom: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                 <label className="form-label" style={{ margin: 0 }}>Feedback</label>

@@ -8,7 +8,7 @@ export async function GET() {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const assignments = getAssignments();
+    const assignments = await getAssignments();
     return NextResponse.json(assignments);
   } catch (error) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'All fields required' }, { status: 400 });
     }
 
-    const assignment = createAssignment({
+    const assignment = await createAssignment({
       title,
       description,
       deadline,

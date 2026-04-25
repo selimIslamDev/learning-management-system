@@ -16,10 +16,15 @@ export default function InstructorAssignmentsPage() {
   useEffect(() => { fetchAssignments(); }, []);
 
   async function fetchAssignments() {
-    const res = await fetch('/api/assignments');
-    const data = await res.json();
-    setAssignments(data);
-    setLoading(false);
+    try {
+      const res = await fetch('/api/assignments');
+      const data = await res.json();
+      setAssignments(Array.isArray(data) ? data : []);
+    } catch (error) {
+      setAssignments([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   function showToast(msg: string) {
@@ -64,20 +69,14 @@ export default function InstructorAssignmentsPage() {
     setEnhancing(false);
   }
 
-  const difficultyColor: Record<string, string> = {
-    beginner: '#06D6A0', intermediate: '#FFD23F', advanced: '#EF476F'
-  };
-
   return (
     <div>
-      {/* Toast */}
       {toast && (
         <div style={{ position: 'fixed', top: '80px', right: '24px', zIndex: 200, background: 'rgba(6,214,160,0.15)', border: '1px solid rgba(6,214,160,0.4)', borderRadius: '10px', padding: '12px 20px', color: '#06D6A0', fontSize: '14px', fontWeight: 500 }}>
           ✓ {toast}
         </div>
       )}
 
-      {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px' }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '32px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '6px' }}>
@@ -93,7 +92,6 @@ export default function InstructorAssignmentsPage() {
         </button>
       </div>
 
-      {/* Create Form */}
       {showForm && (
         <div className="glass-card" style={{ padding: '28px', marginBottom: '32px', border: '1px solid rgba(77,112,255,0.2)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
@@ -140,7 +138,6 @@ export default function InstructorAssignmentsPage() {
         </div>
       )}
 
-      {/* Assignments Grid */}
       {loading ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: '20px' }}>
           {[1,2,3].map(i => (
