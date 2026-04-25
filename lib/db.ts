@@ -175,7 +175,16 @@ export async function getSubmissions(): Promise<Submission[]> {
   const submissions = await db.collection('submissions').find({}).toArray();
   return submissions as unknown as Submission[];
 }
-
+// lal vai - update assignment and submission functions
+export async function updateAssignment(id: string, updates: Partial<Assignment>): Promise<Assignment | null> {
+  const db = await getDb();
+  const result = await db.collection('assignments').findOneAndUpdate(
+    { id },
+    { $set: { ...updates } },
+    { returnDocument: 'after' }
+  );
+  return result as unknown as Assignment | null;
+}
 export async function getSubmissionById(id: string): Promise<Submission | null> {
   const db = await getDb();
   const submission = await db.collection('submissions').findOne({ id });
