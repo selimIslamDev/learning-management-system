@@ -10,7 +10,7 @@ export async function GET() {
 
     const assignments = await getAssignments();
     return NextResponse.json(assignments);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(assignment, { status: 201 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }

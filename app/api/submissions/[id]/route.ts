@@ -3,22 +3,28 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { getSubmissionById, updateSubmission } from '@/lib/db';
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { id } = await params;
     const submission = await getSubmissionById(id);
-    if (!submission) return NextResponse.json({ error: 'Submission not found' }, { status: 404 });
+    if (!submission) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
     return NextResponse.json(submission);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch submission' }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -33,7 +39,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     if (!updated) return NextResponse.json({ error: 'Submission not found' }, { status: 404 });
 
     return NextResponse.json(updated);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to update submission' }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
