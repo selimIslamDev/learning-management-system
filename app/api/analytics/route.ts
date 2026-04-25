@@ -14,8 +14,8 @@ export async function GET() {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const assignments = getAssignments();
-    const submissions = getSubmissions();
+    const assignments = await getAssignments();
+    const submissions = await getSubmissions();
 
     const accepted = submissions.filter((s) => s.status === 'accepted').length;
     const pending = submissions.filter((s) => s.status === 'pending').length;
